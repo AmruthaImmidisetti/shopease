@@ -157,6 +157,7 @@ The project demonstrates **hybrid rendering strategies (SSG, SSR, ISR)**, strong
 
 ### 1️ Clone Repository
  git clone https://github.com/AmruthaImmidisetti/shopease.git
+ 
  cd shopease
 
 ### 2️ Install Dependencies
