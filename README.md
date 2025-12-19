@@ -9,7 +9,7 @@ This application is designed to be **portfolio-ready** and aligned with real-wor
 
 ##  Live Demo
 
-🔗 **Live Application:** https://YOUR-VERCEL-URL.vercel.app  
+🔗 **Live Application:** https://shopease-fawn.vercel.app/
 🎥 **Video Walkthrough (2–5 min):** https://YOUR-VIDEO-LINK
 
 ---
@@ -157,7 +157,7 @@ This application is designed to be **portfolio-ready** and aligned with real-wor
 ##  Running Locally
 
 ### 1️ Clone Repository
- git clone https://github.com/YOUR-USERNAME/shopease.git
+ git clone https://github.com/AmruthaImmidisetti/shopease.git
  cd shopease
 
 ### 2️ Install Dependencies
