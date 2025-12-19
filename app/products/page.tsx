@@ -1,59 +1,33 @@
-import { fetchProducts } from '../../lib/api';
+'use client';
+
+import { useEffect, useState } from 'react';
 import ProductCard from '../../components/ProductCard';
 import SearchBar from '../../components/SearchBar';
 import Filters from '../../components/Filters';
 
-export const dynamic = 'force-dynamic';
+export default function ProductsPage() {
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function ProductsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    q?: string;
-    category?: string | string[];
-    sort?: string;
-    min?: string;
-    max?: string;
-  }>;
-}) {
-  const params = await searchParams;
-  let products = await fetchProducts();
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const res = await fetch('https://fakestoreapi.com/products');
+        const data = await res.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Failed to fetch products', error);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  // 🔍 Search
-  if (params.q) {
-    const q = params.q.toLowerCase();
-    products = products.filter((p: any) =>
-      p.title.toLowerCase().includes(q)
-    );
-  }
+    loadProducts();
+  }, []);
 
-  // 📂 Categories
-  if (params.category) {
-    const categories = Array.isArray(params.category)
-      ? params.category
-      : [params.category];
-
-    products = products.filter((p: any) =>
-      categories.includes(p.category)
-    );
-  }
-
-  // 💰 Price range
-  if (params.min) {
-    products = products.filter((p: any) => p.price >= Number(params.min));
-  }
-
-  if (params.max) {
-    products = products.filter((p: any) => p.price <= Number(params.max));
-  }
-
-  // 🔃 Sorting
-  if (params.sort === 'price-asc') {
-    products = [...products].sort((a, b) => a.price - b.price);
-  }
-
-  if (params.sort === 'price-desc') {
-    products = [...products].sort((a, b) => b.price - a.price);
+  if (loading) {
+    return <p className="p-6">Loading products...</p>;
   }
 
   return (
@@ -63,7 +37,6 @@ export default async function ProductsPage({
       <SearchBar />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-6">
-
         {/* LEFT FILTER BAR */}
         <aside className="md:col-span-1">
           <div className="bg-white p-4 rounded-lg shadow sticky top-24">
@@ -75,7 +48,7 @@ export default async function ProductsPage({
         <section className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.length === 0 ? (
             <p className="text-gray-500 col-span-full">
-              No products found for selected filters.
+              No products found.
             </p>
           ) : (
             products.map((product: any) => (
@@ -83,7 +56,6 @@ export default async function ProductsPage({
             ))
           )}
         </section>
-
       </div>
     </main>
   );
