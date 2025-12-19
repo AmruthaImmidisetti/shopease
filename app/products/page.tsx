@@ -33,7 +33,7 @@ function ProductsContent() {
     return <p className="p-6">Loading products...</p>;
   }
 
-  const filteredProducts = products.filter((p: any) => {
+  let filteredProducts = products.filter((p: any) => {
     const q = searchParams.get('q');
     if (q && !p.title.toLowerCase().includes(q.toLowerCase())) return false;
 
@@ -48,6 +48,21 @@ function ProductsContent() {
     return true;
   });
 
+   // ✅ SORTING (NEW)
+  const sort = searchParams.get('sort');
+
+  if (sort === 'price-asc') {
+    filteredProducts = [...filteredProducts].sort(
+      (a, b) => a.price - b.price
+    );
+  }
+
+  if (sort === 'price-desc') {
+    filteredProducts = [...filteredProducts].sort(
+      (a, b) => b.price - a.price
+    );
+  }
+  
   return (
     <main className="max-w-7xl mx-auto px-6 py-8">
       <h1 className="text-3xl font-bold mb-6">All Products</h1>
