@@ -7,16 +7,15 @@ type CartItem = {
   price: number;
   quantity: number;
   image?: string;
-  selected: boolean; // ✅ NEW
 };
 
 type CartState = {
   items: CartItem[];
-  addToCart: (item: Omit<CartItem, 'quantity' | 'selected'>) => void;
+  addToCart: (item: Omit<CartItem, 'quantity'>) => void;
   removeFromCart: (id: number) => void;
   increaseQty: (id: number) => void;
   decreaseQty: (id: number) => void;
-  toggleSelect: (id: number) => void; // ✅ NEW
+  clearCart: () => void; // ✅ REQUIRED
 };
 
 export const useCartStore = create<CartState>()(
@@ -43,7 +42,6 @@ export const useCartStore = create<CartState>()(
                 ...item,
                 price: Number(item.price),
                 quantity: 1,
-                selected: true, // ✅ default selected
               },
             ],
           });
@@ -71,13 +69,11 @@ export const useCartStore = create<CartState>()(
             .filter(i => i.quantity > 0),
         }),
 
-      toggleSelect: (id) =>
-        set({
-          items: get().items.map(i =>
-            i.id === id ? { ...i, selected: !i.selected } : i
-          ),
-        }),
+      // ✅ THIS FIXES: "clearCart is not a function"
+      clearCart: () => set({ items: [] }),
     }),
-    { name: 'cart-storage' }
+    {
+      name: 'cart-storage',
+    }
   )
 );
