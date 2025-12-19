@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation'; // ✅ NEW
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ProductCard from '../../components/ProductCard';
 import SearchBar from '../../components/SearchBar';
 import Filters from '../../components/Filters';
 
-export default function ProductsPage() {
+function ProductsContent() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const searchParams = useSearchParams(); // ✅ NEW
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     async function loadProducts() {
@@ -33,21 +33,13 @@ export default function ProductsPage() {
     return <p className="p-6">Loading products...</p>;
   }
 
-  // ✅ NEW: Apply filters using URL params
   const filteredProducts = products.filter((p: any) => {
-    // 🔍 Search
     const q = searchParams.get('q');
-    if (q && !p.title.toLowerCase().includes(q.toLowerCase())) {
-      return false;
-    }
+    if (q && !p.title.toLowerCase().includes(q.toLowerCase())) return false;
 
-    // 📂 Category
     const categories = searchParams.getAll('category');
-    if (categories.length > 0 && !categories.includes(p.category)) {
-      return false;
-    }
+    if (categories.length > 0 && !categories.includes(p.category)) return false;
 
-    // 💰 Price range
     const min = searchParams.get('min');
     const max = searchParams.get('max');
     if (min && p.price < Number(min)) return false;
@@ -63,14 +55,12 @@ export default function ProductsPage() {
       <SearchBar />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-6">
-        {/* LEFT FILTER BAR */}
         <aside className="md:col-span-1">
           <div className="bg-white p-4 rounded-lg shadow sticky top-24">
             <Filters />
           </div>
         </aside>
 
-        {/* PRODUCTS */}
         <section className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.length === 0 ? (
             <p className="text-gray-500 col-span-full">
@@ -84,5 +74,13 @@ export default function ProductsPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<p className="p-6">Loading filters...</p>}>
+      <ProductsContent />
+    </Suspense>
   );
 }
