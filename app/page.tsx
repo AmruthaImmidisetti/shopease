@@ -1,13 +1,10 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { fetchProducts } from '../lib/api';
 import CategoryCard from '../components/CategoryCard';
 import ProductCarousel from '../components/ProductCarousel';
-
-export const metadata = {
-  title: 'Home',
-  description: 'Shop the latest products at MyStore',
-};
 
 const CATEGORIES = [
   { label: 'Men', value: "men's clothing" },
@@ -16,13 +13,26 @@ const CATEGORIES = [
   { label: 'Jewelry', value: 'jewelery' },
 ];
 
+export default function Home() {
+  const [products, setProducts] = useState<any[]>([]);
 
-export default async function Home() {
-  const products = await fetchProducts();
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const res = await fetch('https://fakestoreapi.com/products');
+        const data = await res.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Failed to fetch products', error);
+        setProducts([]);
+      }
+    }
+
+    loadProducts();
+  }, []);
 
   return (
     <main className="bg-gray-50">
-
       {/* 🔥 HERO / BANNER */}
       <section className="relative w-full h-[280px] md:h-[420px]">
         <Image
@@ -85,7 +95,6 @@ export default async function Home() {
           </Link>
         </div>
       </section>
-
     </main>
   );
 }
