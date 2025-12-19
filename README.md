@@ -3,14 +3,13 @@
 ShopEase is a full-featured, production-grade e-commerce web application built with **Next.js (App Router)**.  
 The project demonstrates **hybrid rendering strategies (SSG, SSR, ISR)**, strong **performance optimization**, **SEO best practices**, **accessibility compliance**, and a **complete testing setup**.
 
-This application is designed to be **portfolio-ready** and aligned with real-world e-commerce requirements.
-
 ---
 
 ##  Live Demo
 
 🔗 **Live Application:** https://shopease-fawn.vercel.app/
-🎥 **Video Walkthrough (2–5 min):** https://YOUR-VIDEO-LINK
+
+🎥 **Video Walkthrough:** https://drive.google.com/file/d/1kYY3Xja2QG_Lwf5yrQ0fvLhAAxES3mKJ/view
 
 ---
 
