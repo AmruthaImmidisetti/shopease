@@ -1,9 +1,13 @@
+// lib/api.ts
 export async function fetchProducts() {
   const res = await fetch('https://fakestoreapi.com/products', {
     cache: 'no-store',
   });
 
-  if (!res.ok) throw new Error('Failed to fetch products');
+  if (!res.ok) {
+    throw new Error('Failed to fetch products');
+  }
+
   return res.json();
 }
 
@@ -12,6 +16,9 @@ export async function fetchProduct(id: string) {
     cache: 'no-store',
   });
 
-  if (!res.ok) throw new Error('Failed to fetch product');
+  if (!res.ok) {
+    throw new Error('Failed to fetch product');
+  }
+
   return res.json();
 }
